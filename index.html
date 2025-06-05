@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flippable Image Card</title>
+  <style>
+    body {
+      background: #0d1117;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .card-container {
+      perspective: 1000px;
+      width: 300px; /* Adjust to match your image width */
+      height: 400px; /* Adjust to match your image height */
+    }
+
+    .flip-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s ease;
+      cursor: pointer;
+    }
+
+    .flip-card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      background: #f0f0f0; /* Background color for any empty space */
+    }
+
+    .flip-card-front img,
+    .flip-card-back img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain; /* Ensures full image visibility */
+      image-rendering: -webkit-optimize-contrast; /* Improves image quality */
+    }
+
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="card-container">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-front">
+        <img src="front.jpg" alt="Chila Tours & Travels">
+      </div>
+      <div class="flip-card-back">
+        <img src="back.jpg" alt="Contact Information">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Optional: Auto-center the card if images have different sizes
+    document.addEventListener('DOMContentLoaded', function() {
+      const card = document.querySelector('.flip-card');
+      const frontImg = document.querySelector('.flip-card-front img');
+      const backImg = document.querySelector('.flip-card-back img');
+      
+      // Wait for images to load
+      frontImg.onload = backImg.onload = function() {
+        const maxWidth = Math.max(frontImg.naturalWidth, backImg.naturalWidth);
+        const maxHeight = Math.max(frontImg.naturalHeight, backImg.naturalHeight);
+        
+        document.querySelector('.card-container').style.width = maxWidth + 'px';
+        document.querySelector('.card-container').style.height = maxHeight + 'px';
+      };
+      
+      // Fallback in case images are cached
+      if (frontImg.complete && backImg.complete) {
+        frontImg.onload();
+      }
+    });
+  </script>
+</body>
+</html>
